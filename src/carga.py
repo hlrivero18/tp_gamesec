@@ -1,4 +1,5 @@
-import csv 
+
+import csv
 from src.utils.casteo_telemetria import castear_fila
 
 def cargar_telemetria(ruta_archivo: str) -> list[dict]:
@@ -13,7 +14,6 @@ def cargar_telemetria(ruta_archivo: str) -> list[dict]:
             for fila in lector:
                 dict_casteada.append(castear_fila(fila))
 
-        print(dict_casteada)
         return dict_casteada
 
     except FileNotFoundError:
