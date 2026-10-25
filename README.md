@@ -119,8 +119,8 @@ tp_programacion/
   - `castear_fila()` para tipado estricto (`int`, `float`, `str`).
 - [x] **Menú interactivo básico:** Despliegue de opciones en `main.py` y carga de dataset funcional.
 - [ ] **Módulo de procesamiento (`src/procesamiento.py`):**
-  - Estadísticas globales de servidores.
-  - Rendimiento por región de servidor.
+  - [x] Estadísticas globales de servidores.
+  - [x] Rendimiento por región de servidor.
   - Auditoría y clasificación de incidentes de seguridad (Críticos y Sospechosos).
 - [ ] **Generación de reporte:** Exportación a `reporte_gamesec.txt`.
 - [ ] **README:** Completar datos de los integrantes del equipo.
