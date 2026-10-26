@@ -9,12 +9,10 @@ Tecnicaturas Universitarias en Inteligencia Artificial, Ciberseguridad y Videoju
 
 ## 👥 Integrantes del Equipo
 
-| Nombre y Apellido | DNI | Carrera |
-| :--- | :--- | :--- |
-| *Completar Integrante 1* | *Completar DNI* | *IA / Ciberseguridad / Videojuegos* |
-| *Completar Integrante 2* | *Completar DNI* | *IA / Ciberseguridad / Videojuegos* |
-| *Completar Integrante 3* | *Completar DNI* | *IA / Ciberseguridad / Videojuegos* |
-| *Completar Integrante 4* | *Completar DNI* | *IA / Ciberseguridad / Videojuegos* |
+| Nombre y Apellido        | DNI             | Carrera                             |
+|:-------------------------|:----------------|:------------------------------------|
+| *Hector Rivero*          | *96249035*      | *Tecnicatura en IA*                 |
+| *Catriel Luna*           | *Completar DNI* | *Licenciatura en Ciberseguridad*    |
 
 ---
 
