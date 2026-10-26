@@ -12,7 +12,7 @@ Tecnicaturas Universitarias en Inteligencia Artificial, Ciberseguridad y Videoju
 | Nombre y Apellido        | DNI             | Carrera                             |
 |:-------------------------|:----------------|:------------------------------------|
 | *Hector Rivero*          | *96249035*      | *Tecnicatura en IA*                 |
-| *Catriel Luna*           | *Completar DNI* | *Licenciatura en Ciberseguridad*    |
+| *Catriel Luna*           | *47641798*      | *Licenciatura en Ciberseguridad*    |
 
 ---
 
