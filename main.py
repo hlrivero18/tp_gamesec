@@ -7,92 +7,28 @@ from src.procesamiento import (
     analizar_por_servidor,
     clasificar_incidentes,
 )
+from src.export_csv import exportar_reporte
+from src.utils.limpiar_consola import limpiar_pantalla
 
 BASE_DIR = Path(__file__).resolve().parent
 RUTA_CSV = BASE_DIR / "data" / "gamesec_logs.csv"
 
-
-def exportar_reporte(sesiones: list[dict], ruta_salida: str = "reporte_gamesec.txt") -> None:
-    stats = calcular_estadisticas_globales(sesiones)
-    regional = analizar_por_servidor(sesiones)
-    frecuencias, criticos = clasificar_incidentes(sesiones)
-    total = stats["total_sesiones"]
-
-    fecha_hoy = datetime.now().strftime("%d/%m/%Y")
-
-    lineas = [
-        "=" * 70,
-        "              REPORTE DE AUDITORÍA Y TELEMETRÍA — GAMESEC",
-        "=" * 70,
-        f"Fecha de generación: {fecha_hoy}\n",
-        "[1] RESUMEN GLOBAL OPERATIVO",
-        "-" * 70,
-        f"Total de sesiones procesadas: {stats['total_sesiones']}",
-        f"Ping promedio global: {stats['ping_promedio']:.2f} ms",
-        f"Duración media de partida: {stats['duracion_promedio']:.2f} min",
-        f"Partidas de alta competencia (Ranked/Torneo): {stats['porcentaje_competitivas']:.2f}%\n",
-        "[2] RENDIMIENTO REGIONAL POR SERVIDOR",
-        "-" * 70,
-        f"{'Servidor':<18} | {'Sesiones':<8} | {'Ping Promedio':<13} | {'FPS Promedio':<12}",
-        "-" * 70,
-    ]
-
-    for servidor, datos in regional.items():
-        lineas.append(
-            f"{servidor:<18} | "
-            f"{datos['cantidad']:<8} | "
-            f"{datos['ping_promedio']:>6.2f} ms    | "
-            f"{datos['fps_promedio']:>6.2f} fps"
-        )
-
-    p_norm = (frecuencias["Normal"] / total * 100) if total else 0.0
-    p_sosp = (frecuencias["Sospechoso"] / total * 100) if total else 0.0
-    p_crit = (frecuencias["Crítico"] / total * 100) if total else 0.0
-
-    lineas.extend([
-        "\n[3] AUDITORÍA DE SEGURIDAD E INCIDENTES",
-        "-" * 70,
-        "Distribución de estados de seguridad:",
-        f"  • Normales:    {frecuencias['Normal']:>3} sesiones ({p_norm:>5.2f}%)",
-        f"  • Sospechosos: {frecuencias['Sospechoso']:>3} sesiones ({p_sosp:>5.2f}%)",
-        f"  • Críticos:    {frecuencias['Crítico']:>3} sesiones ({p_crit:>5.2f}%)\n",
-        "Detalle de Sesiones Críticas Detectadas:",
-    ])
-
-    for c in criticos:
-        lineas.append(
-            f"  [!] Sesión #{c['id_sesion']}  | Jugador: {c['jugador_id']} | Servidor: {c['servidor']}\n"
-            f"      Motivo: {c['motivo']}"
-        )
-
-    lineas.extend([
-        "\n[4] CONCLUSIONES TÉCNICAS DEL EQUIPO",
-        "-" * 70,
-        "1. Los servidores de la región Sudamérica (SA-BuenosAires y SA-SaoPaulo) registran los mejores tiempos de respuesta con pings promedio inferiores a 80 ms, mientras que NA-Virginia y EU-Frankfurt presentan latencias elevadas superiores a 190 ms, sugiriendo la necesidad de optimizar las rutas de conexión transcontinentales.",
-        "2. El motor heurístico detectó 10 sesiones críticas (6.67%) con concurrencia de ataques de fuerza bruta en login (hasta 7 intentos fallidos) y múltiples reportes por trampas (hasta 5 denuncias), lo que evidencia intentos deliberados de vulneración y conducta maliciosa.",
-        "3. Más del 53% de la actividad total corresponde a modalidades de alta competencia (Competitiva y Torneo), por lo cual resulta prioritario implementar un sistema automatizado de mitigación o bloqueo inmediato ante incidentes clasificados como Críticos.",
-        "=" * 70,
-        "                    FIN DEL REPORTE GAMESEC",
-        "=" * 70,
-    ])
-
-    destino = Path(ruta_salida)
-    if not destino.is_absolute():
-        destino = BASE_DIR / destino
-
-    with open(destino, mode="w", encoding="utf-8") as f:
-        f.write("\n".join(lineas) + "\n")
-
-
-def run():
+def main():
+    """
+    Consigna 5:
+        LLegamos al main, la cual tiene la unica misión de orquestar los resultados
+        obtenidos por las demas funciones según la opción seleccionada por el usuario.
+    """
     sesiones = []
 
     while True:
+        limpiar_pantalla()
         print("\n=========================================")
         print("   GAMESEC MONITOR - PANEL DE CONTROL")
         print("=========================================")
-        mostrar_opciones()
+        mostrar_opciones() # Función que imprime y recopila las opciones disponibles.
         print("=========================================")
+
         opcion = input("Seleccione una opción: ").strip()
 
         if opcion == "1":
@@ -139,6 +75,7 @@ def run():
             else:
                 frecuencias, criticos = clasificar_incidentes(sesiones)
                 total = len(sesiones)
+                # Calculamos los porcentajes de las frecuencias
                 p_norm = (frecuencias["Normal"] / total * 100) if total else 0.0
                 p_sosp = (frecuencias["Sospechoso"] / total * 100) if total else 0.0
                 p_crit = (frecuencias["Crítico"] / total * 100) if total else 0.0
@@ -161,8 +98,8 @@ def run():
             if not sesiones:
                 print("\nDebe cargar el dataset primero (Opción 1).")
             else:
-                exportar_reporte(sesiones, ruta_salida="reporte_gamesec.txt")
-                print("\nReporte consolidado exportado exitosamente como 'reporte_gamesec.txt'.")
+                exportar_reporte(sesiones)
+                print("\nReporte consolidado exportado exitosamente en la carpeta reportes.")
 
         elif opcion == "6":
             print("\nSaliendo del sistema...")
@@ -171,6 +108,6 @@ def run():
         else:
             print("\nOpción no válida. Intente nuevamente.")
 
+        input("\nPresione Enter para volver al menú...")
 
-if __name__ == "__main__":
-    run()
+main()

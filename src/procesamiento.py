@@ -1,4 +1,15 @@
 def calcular_estadisticas_globales(sesiones: list[dict]) -> dict:
+    """
+        Consigna 2:
+            Esta función calcula el panorama estadistico general de todas las sesiones,
+            obteniendo un diccionario con:
+                {
+                    total_sesiones: int total de sesiones,
+                    ping_promedio: float total de ping promedio de sesiones,
+                    duracion_promedio: float duracion de duracion de sesiones,
+                    porcentaje_competitivas: float porcentaje competitivas de sesiones,
+                }
+    """
     if not sesiones:
         return {
             "total_sesiones": 0,
@@ -28,6 +39,11 @@ def calcular_estadisticas_globales(sesiones: list[dict]) -> dict:
 
 
 def analizar_por_servidor(sesiones: list[dict]) -> dict:
+    """
+    Consigna 3:
+        Esta función agrupa los datos de la lista del diccionario de sesiones y retorna un diccionario
+        con las estadisticas por región.
+    """
     if not sesiones:
         return {}
 
@@ -65,6 +81,18 @@ def analizar_por_servidor(sesiones: list[dict]) -> dict:
 
 
 def clasificar_incidentes(sesiones: list[dict]) -> tuple[dict, list[dict]]:
+    """
+    Consigna 4:
+        Función heuristica que analiza los datos de reportes_trampa, intentos_fallidos y ping_promedio
+        y según ciertas condiciones los suma en un diccionario de frecuencias.
+
+        Esta función termina retornando una tupla con:
+            [
+                1. diccionario de frecuencias
+                2. lista de diccionarios correspondientes a los eventos "criticos"
+            ]
+
+    """
     frecuencias = {"Normal": 0, "Sospechoso": 0, "Crítico": 0}
     eventos_criticos = []
 
@@ -100,29 +128,3 @@ def clasificar_incidentes(sesiones: list[dict]) -> tuple[dict, list[dict]]:
             frecuencias["Normal"] += 1
 
     return frecuencias, eventos_criticos
-
-
-if __name__ == "__main__":
-    print("==========================================================")
-    print("  EJECUTANDO PRUEBAS UNITARIAS LOCALES EN PROCESAMIENTO")
-    print("==========================================================")
-
-    datos_prueba = [
-        {"id_sesion": 1, "jugador_id": "U1", "servidor": "SA-BuenosAires", "ping_promedio": 40, "fps_promedio": 120, "duracion_minutos": 15.0, "intentos_fallidos": 0, "reportes_trampa": 0, "tipo_partida": "Casual"},
-        {"id_sesion": 2, "jugador_id": "U2", "servidor": "SA-BuenosAires", "ping_promedio": 210, "fps_promedio": 100, "duracion_minutos": 20.0, "intentos_fallidos": 2, "reportes_trampa": 0, "tipo_partida": "Competitiva"},
-        {"id_sesion": 3, "jugador_id": "U3", "servidor": "NA-Virginia", "ping_promedio": 150, "fps_promedio": 90, "duracion_minutos": 35.0, "intentos_fallidos": 5, "reportes_trampa": 4, "tipo_partida": "Torneo"},
-    ]
-
-    print("\n1. Probando estadísticas globales:")
-    print(calcular_estadisticas_globales(datos_prueba))
-
-    print("\n2. Probando análisis regional:")
-    rend = analizar_por_servidor(datos_prueba)
-    for srv, m in rend.items():
-        print(f"   {srv}: {m}")
-
-    print("\n3. Probando clasificador de incidentes:")
-    frec, crit = clasificar_incidentes(datos_prueba)
-    print(f"   Frecuencias: {frec}")
-    print(f"   Críticos ({len(crit)}): {crit}")
-    print("\n¡Pruebas unitarias finalizadas con éxito!")
