@@ -1,7 +1,8 @@
 import csv
 
-def castear_fila(fila):
-    return{
+
+def castear_fila(fila: dict) -> dict:
+    return {
         'id_sesion': int(fila['id_sesion']),
         'servidor': fila['servidor'],
         'jugador_id': fila['jugador_id'],
@@ -13,8 +14,10 @@ def castear_fila(fila):
         'reportes_trampa': int(fila['reportes_trampa'])
     }
 
+
 def cargar_telemetria(ruta_archivo: str) -> list[dict]:
     dict_casteada = []
+
     try:
         with open(ruta_archivo, mode='r', encoding='utf-8') as archivo:
             lector = csv.DictReader(archivo)

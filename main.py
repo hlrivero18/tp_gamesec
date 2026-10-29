@@ -13,14 +13,6 @@ RUTA_CSV = BASE_DIR / "data" / "gamesec_logs.csv"
 
 
 def exportar_reporte(sesiones: list[dict], ruta_salida: str = "reporte_gamesec.txt") -> None:
-    """
-    Genera un archivo de texto estructurado con el resumen consolidado de todos los análisis:
-    métricas globales, rendimiento regional, auditoría de seguridad y conclusiones del equipo.
-
-    Args:
-        sesiones (list[dict]): Lista de diccionarios con la telemetría cargada.
-        ruta_salida (str): Nombre o ruta del archivo de texto a generar.
-    """
     stats = calcular_estadisticas_globales(sesiones)
     regional = analizar_por_servidor(sesiones)
     frecuencias, criticos = clasificar_incidentes(sesiones)
@@ -76,7 +68,6 @@ def exportar_reporte(sesiones: list[dict], ruta_salida: str = "reporte_gamesec.t
     lineas.extend([
         "\n[4] CONCLUSIONES TÉCNICAS DEL EQUIPO",
         "-" * 70,
-        "(Espacio para 3 conclusiones redactadas obligatoriamente por el grupo)",
         "1. Los servidores de la región Sudamérica (SA-BuenosAires y SA-SaoPaulo) registran los mejores tiempos de respuesta con pings promedio inferiores a 80 ms, mientras que NA-Virginia y EU-Frankfurt presentan latencias elevadas superiores a 190 ms, sugiriendo la necesidad de optimizar las rutas de conexión transcontinentales.",
         "2. El motor heurístico detectó 10 sesiones críticas (6.67%) con concurrencia de ataques de fuerza bruta en login (hasta 7 intentos fallidos) y múltiples reportes por trampas (hasta 5 denuncias), lo que evidencia intentos deliberados de vulneración y conducta maliciosa.",
         "3. Más del 53% de la actividad total corresponde a modalidades de alta competencia (Competitiva y Torneo), por lo cual resulta prioritario implementar un sistema automatizado de mitigación o bloqueo inmediato ante incidentes clasificados como Críticos.",
